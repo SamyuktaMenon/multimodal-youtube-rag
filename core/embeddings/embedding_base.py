@@ -6,7 +6,7 @@ from typing import List
 
 
 class BaseEmbedding(ABC):
-    """Abstract base class for all text embedding providers."""
+    """Abstract base class for all text and multimodal embedding providers."""
 
     def __init__(self, model_name: str, dimension: int):
         self.model_name = model_name
@@ -22,3 +22,10 @@ class BaseEmbedding(ABC):
         """Embed a single query string."""
         pass
 
+    def embed_images(self, image_paths: List[str]) -> List[List[float]]:
+        """Embed a batch of image keyframes into the vector space (optional)."""
+        return []
+
+    def embed_image(self, image_path: str) -> List[float]:
+        """Embed a single image keyframe into the vector space (optional)."""
+        return []

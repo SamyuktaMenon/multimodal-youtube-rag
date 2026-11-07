@@ -5,6 +5,7 @@ from typing import Optional
 from core.embeddings.embedding_base import BaseEmbedding
 from core.embeddings.google_embed import GoogleEmbedding, OpenAIEmbedding, TFIDFEmbedding
 from core.embeddings.sentence_transformer_embed import SentenceTransformerEmbedding
+from core.embeddings.clip_embed import CLIPMultimodalEmbedding
 
 
 def get_embedding_model(
@@ -14,7 +15,10 @@ def get_embedding_model(
 ) -> BaseEmbedding:
     """Instantiate embedding model based on provider."""
     provider = provider.lower()
-    if provider in ["sentence-transformers", "local", "hf"]:
+    if provider in ["clip", "multimodal", "vision"]:
+        name = model_name or "clip-ViT-B-32"
+        return CLIPMultimodalEmbedding(model_name=name)
+    elif provider in ["sentence-transformers", "local", "hf"]:
         name = model_name or "all-MiniLM-L6-v2"
         return SentenceTransformerEmbedding(model_name=name)
     elif provider in ["google", "gemini"]:
@@ -27,4 +31,3 @@ def get_embedding_model(
         return TFIDFEmbedding()
     else:
         return SentenceTransformerEmbedding(model_name="all-MiniLM-L6-v2")
-

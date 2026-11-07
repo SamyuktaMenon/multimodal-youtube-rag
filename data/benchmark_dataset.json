@@ -1,0 +1,92 @@
+{
+  "dataset_name": "Attention-Is-All-You-Need-Lecture-Benchmark",
+  "video_id": "test_transformer_lecture",
+  "video_title": "Understanding Transformer Attention Mechanisms & Positional Encodings",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 45.0,
+      "text": "Welcome to today's lecture on sequence-to-sequence models and the revolutionary Transformer architecture introduced by Vaswani et al in 2017."
+    },
+    {
+      "start": 45.0,
+      "end": 95.0,
+      "text": "Before Transformers, recurrent neural networks and LSTMs processed tokens sequentially, creating an information bottleneck and preventing parallelization across long sequences."
+    },
+    {
+      "start": 95.0,
+      "end": 150.0,
+      "text": "Scaled Dot-Product Attention computes attention weights using Query, Key, and Value matrices. The formula divides the dot product of Q and K transpose by the square root of dk."
+    },
+    {
+      "start": 150.0,
+      "end": 210.0,
+      "text": "Multi-Head Attention projects Queries, Keys, and Values h times with different learned linear projections, allowing the model to jointly attend to information at different representation subspaces."
+    },
+    {
+      "start": 210.0,
+      "end": 270.0,
+      "text": "Since the Transformer contains no recurrence and no convolution, positional encodings using sinusoidal functions of different frequencies are added to input embeddings to inject sequence order."
+    },
+    {
+      "start": 270.0,
+      "end": 330.0,
+      "text": "Layer normalization and residual connections wrap around both multi-head attention and position-wise feed-forward networks to stabilize gradients during deep network optimization."
+    },
+    {
+      "start": 330.0,
+      "end": 390.0,
+      "text": "The decoder stack incorporates masked multi-head attention, which prevents positions from attending to subsequent future tokens during autoregressive language generation."
+    },
+    {
+      "start": 390.0,
+      "end": 450.0,
+      "text": "Cross-attention in the decoder allows query vectors from the decoder self-attention layer to attend over key and value vectors produced by the final encoder layer."
+    }
+  ],
+  "benchmark_queries": [
+    {
+      "query_id": "q1",
+      "query": "What is the formula for Scaled Dot-Product Attention?",
+      "expected_segment_indices": [2],
+      "relevant_timestamps": [95.0, 150.0],
+      "gold_keywords": ["query", "key", "value", "square root of dk", "scaled dot-product"]
+    },
+    {
+      "query_id": "q2",
+      "query": "Why did recurrent neural networks create an information bottleneck?",
+      "expected_segment_indices": [1],
+      "relevant_timestamps": [45.0, 95.0],
+      "gold_keywords": ["sequentially", "bottleneck", "parallelization", "recurrent"]
+    },
+    {
+      "query_id": "q3",
+      "query": "How do multi-head attention layers capture different representation subspaces?",
+      "expected_segment_indices": [3],
+      "relevant_timestamps": [150.0, 210.0],
+      "gold_keywords": ["multi-head", "subspaces", "projections", "jointly attend"]
+    },
+    {
+      "query_id": "q4",
+      "query": "How does the Transformer inject sequence order without recurrence?",
+      "expected_segment_indices": [4],
+      "relevant_timestamps": [210.0, 270.0],
+      "gold_keywords": ["positional encodings", "sinusoidal", "frequencies", "order"]
+    },
+    {
+      "query_id": "q5",
+      "query": "What prevents the decoder from looking ahead at future tokens?",
+      "expected_segment_indices": [6],
+      "relevant_timestamps": [330.0, 390.0],
+      "gold_keywords": ["masked multi-head", "subsequent", "future tokens", "autoregressive"]
+    },
+    {
+      "query_id": "q6",
+      "query": "Where do the query and key vectors originate in cross-attention?",
+      "expected_segment_indices": [7],
+      "relevant_timestamps": [390.0, 450.0],
+      "gold_keywords": ["cross-attention", "decoder", "encoder", "key and value"]
+    }
+  ]
+}
+
