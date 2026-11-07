@@ -143,8 +143,9 @@ with st.sidebar:
     )
     embed_provider = st.selectbox(
         "Embedding Model",
-        ["sentence-transformers", "tfidf", "google", "openai"],
+        ["sentence-transformers", "clip", "tfidf", "google", "openai"],
         index=0,
+        help="Local SentenceTransformers, CLIP (Multimodal ViT), TF-IDF, or Cloud APIs.",
     )
     llm_provider = st.selectbox(
         "LLM Provider",
@@ -188,7 +189,27 @@ def process_video_pipeline():
         else:
             store = FAISSVectorStore(metric="cosine")
 
-        doc_embeddings = emb_model.embed_documents(texts)
+        if embed_provider in ["clip", "multimodal"] and mm_doc.frames:
+            # Genuine multimodal vector fusion: fuse text passage vectors with nearest keyframe image vectors
+            frame_map = {f.timestamp: f.image_path for f in mm_doc.frames}
+            doc_embeddings = []
+            for c in chunks:
+                nearest_img = None
+                for ts, ipath in frame_map.items():
+                    if abs(ts - c.start_time) <= 35 and os.path.exists(ipath):
+                        nearest_img = ipath
+                        break
+                if nearest_img:
+                    t_vec = np.array(emb_model.embed_query(c.text))
+                    i_vec = np.array(emb_model.embed_image(nearest_img))
+                    composite = (t_vec + i_vec) / 2.0
+                    composite = composite / (np.linalg.norm(composite) + 1e-9)
+                    doc_embeddings.append(composite.tolist())
+                else:
+                    doc_embeddings.append(emb_model.embed_query(c.text))
+        else:
+            doc_embeddings = emb_model.embed_documents(texts)
+
         store.add_documents(chunks, doc_embeddings)
 
         # Hybrid Retriever
